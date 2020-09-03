@@ -1,0 +1,141 @@
+﻿@model LiteCommerce.Admin.Models.EmployeePaginationResult
+@{
+    ViewBag.Title = "Manage Employee";
+    int i = 0;
+}
+<div class="box box-primary">
+    <div class="box-body">
+        <form action="~/Employee" method="get">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Input search value..." name="searchValue" value="@Model.SearchValue">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+<form action="~/Employee/Delete" method="post">
+    <div class="container-fluid row lc-margin-bottom">
+        <div class="col-sm-8">
+            There are <b>@Model.RowCount</b> Customers. Page @string.Format("{0}/{1}", Model.Page, Model.PageCount)
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="btn-group">
+                <a href="~/Employee/Input" class="btn btn-sm btn-primary">Add Employee</a>
+                <button type="submit" class="btn btn-sm btn-danger">Delete Employees</button>
+            </div>
+        </div>
+    </div>
+    <div class="box box-success">
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:30px">
+                            <input type="checkbox" />
+                        </th>
+                        <th style="width:50px">#</th>
+                        <th style="width:auto">Name</th>
+                        <th style="width:200px">Date</th>
+                        <th style="width:200px">Address</th>
+                        <th style="width:200px">Contact Info</th>
+                        <th style="width:120px">Photo </th>
+                        <th style="width:80px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model.Data)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@employee.EmployeeID" name="employeeIDs"/>
+                            </td>
+                            <td>@(++i)</td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @employee.FirstName @employee.LastName
+                                </span>
+                                <span class="lc-contact-name">
+                                    @employee.Title
+                                </span>
+                            </td>
+                            <td>
+                                <p>Birth Date : @employee.BirthDate</p>
+                                <p>Hire Date :@String.Format("{0:dd/MM/yyyy:t}", employee.HireDate)</p>
+                            </td>
+                            <td>
+                                <p style="display:block">@employee.Address</p>
+                                <p>@employee.City - @employee.Country</p>
+                            </td>
+                            <td>
+                                <p style="display:block"><i class="fa fa-envelope"></i> @employee.Email</p>
+                                <p style="display:block"><i class="fa fa-home"></i> @employee.HomePhone</p>
+                            </td>
+                            <td>
+                                <img src="~/Images/uploads/@employee.PhotoPath" class="img-responsive" />
+                            </td>
+                            <td class="text-right">
+                                <a class="btn btn-sm btn-default" href="~/Employee/Input/@employee.EmployeeID/">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        </div>
+</form>
+<div class="box-footer clearfix text-center">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        @if (Model.Page > 1)
+            {
+            <li><a href="~/Employee?page=@(Model.Page - 1)&searchValue=@Model.SearchValue">&laquo;</a></li>
+        }
+        @if (Model.Page > 3)
+            {
+            <li><a href="~/Employee?page=1&searchValue=@(Model.SearchValue)">1</a></li>
+                <li class="dots"><a href="#">...</a></li>
+        }
+        @if (Model.Page - 2 > 0)
+            {
+            <li><a href="~/Employee?page=@(Model.Page-2)&searchValue=@Model.SearchValue">@(Model.Page - 2)</a></li>
+        }
+        @if (Model.Page - 1 > 0)
+            {
+            <li><a href="~/Employee?page=@(Model.Page-1)&searchValue=@Model.SearchValue">@(Model.Page - 1)</a></li>
+        }
+        <li class="active"><a href="~/Employee?page=@Model.Page&searchValue=@Model.SearchValue">@Model.Page</a></li>
+        @if (Model.Page + 1 < Model.PageCount + 1)
+            {
+            <li><a href="~/Employee?page=@(Model.Page+1)&searchValue=@Model.SearchValue">@(Model.Page + 1)</a></li>
+        }
+        @if (Model.Page + 2 < Model.PageCount + 1)
+            {
+            <li><a href="~/Employee?page=@(Model.Page+2)&searchValue=@Model.SearchValue">@(Model.Page + 2)</a></li>
+        }
+        @if (Model.Page < Model.PageCount - 2)
+            {
+            <li class="dots"><a href="#">...</a></li>
+                <li><a href="~/Employee?page=@Model.PageCount&searchValue=@Model.SearchValue">@Model.PageCount</a></li>
+        }
+        @*@for (int page = 1; page <= model.pagecount; page++)
+            {
+            if (model.page == page)
+            {
+            <li class="active"><a href="~/Employee?page=@page@searchValue">@page</a></li>
+            }
+            else
+            {
+            <li><a href="~/Employee?page=@page@searchValue">@page</a></li>
+            }
+            }*@
+        @if (Model.Page < Model.PageCount)
+            {
+            <li><a href="~/Employee?page=@(Model.Page + 1)&searchValue=@Model.SearchValue">&raquo;</a></li>
+        }
+    </ul>
+</div>

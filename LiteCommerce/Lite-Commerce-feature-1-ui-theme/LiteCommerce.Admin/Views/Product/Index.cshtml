@@ -1,0 +1,145 @@
+﻿@model LiteCommerce.Admin.Models.ProductPaginationResult
+@{
+    int i = 0;
+    ViewBag.Title = "Manage Product";
+}
+<div class="box box-primary">
+    <div class="box-body">
+        <form action="~/Product" method="get">
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(m => m.Category,
+                      SelectListHelper.Categories(), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(m => m.Supplier,
+                      SelectListHelper.Suppliers(), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group ">
+                        @Html.TextBoxFor(m => m.SearchValue, new { @class = "form-control", @placeholder = "Input search value..." })
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-primary btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<form method="post" action="~/Product/Delete">
+    <div class="container-fluid row lc-margin-bottom">
+        <div class="col-sm-8">
+            There are <b>@Model.RowCount</b> Products. Page @string.Format("{0}/{1}", Model.Page, Model.PageCount)
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="btn-group">
+                <a href="~/Product/Input" class="btn btn-sm btn-primary">Add Product</a>
+                <button type="submit" class="btn btn-sm btn-danger">Delete Products</button>
+            </div>
+        </div>
+    </div>
+    <div class="box box-success">
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:30px">
+                            <input type="checkbox" />
+                        </th>
+                        <th style="width:50px">#</th>
+                        <th style="width:150px">Name</th>
+                        <th style="width:150px">QuantityPerUnit</th>
+                        <th style="width:120px">UnitPrice</th>
+                        <th style="width:300px">Description</th>
+                        <th style="width:auto">Image</th>
+                        <th style="width:80px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Data)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="ProductIDs" value="@product.ProductID"/>
+                            </td>
+                            <td>@(++i)</td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @product.ProductName
+                                </span>
+
+                            </td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @product.QuantityPerUnit
+                                </span>
+
+                            </td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @product.UnitPrice
+                                </span>
+
+                            </td>
+                            <td>
+                                <span style="display:block">@product.Descriptions</span>
+
+                            </td>
+                            <td>
+                                <img src="~/Images/products/@product.PhotoPath" class="img-responsive" />
+                            </td>
+                            <td class="text-right">
+                                <a class="btn btn-sm btn-default" href="~/Product/Input/@product.ProductID/">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+<div class="box-footer clearfix text-center">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        @if (Model.Page > 1)
+            {
+            <li><a href="~/Product?page=@(Model.Page - 1)&searchValue=@Model.SearchValue">&laquo;</a></li>
+        }
+        @if (Model.Page > 3)
+            {
+            <li><a href="~/Product?page=1&searchValue=@(Model.SearchValue)">1</a></li>
+            <li class="dots"><a href="#">...</a></li>
+        }
+        @if (Model.Page - 2 > 0)
+            {
+            <li><a href="~/Product?page=@(Model.Page-2)&searchValue=@Model.SearchValue">@(Model.Page - 2)</a></li>
+        }
+        @if (Model.Page - 1 > 0)
+            {
+            <li><a href="~/Product?page=@(Model.Page-1)&searchValue=@Model.SearchValue">@(Model.Page - 1)</a></li>
+        }
+        <li class="active"><a href="~/Product?page=@Model.Page&searchValue=@Model.SearchValue">@Model.Page</a></li>
+        @if (Model.Page + 1 < Model.PageCount + 1)
+            {
+            <li><a href="~/Product?page=@(Model.Page+1)&searchValue=@Model.SearchValue">@(Model.Page + 1)</a></li>
+        }
+        @if (Model.Page + 2 < Model.PageCount + 1)
+            {
+            <li><a href="~/Product?page=@(Model.Page+2)&searchValue=@Model.SearchValue">@(Model.Page + 2)</a></li>
+        }
+        @if (Model.Page < Model.PageCount - 2)
+            {
+            <li class="dots"><a href="#">...</a></li>
+            <li><a href="~/Product?page=@Model.PageCount&searchValue=@Model.SearchValue">@Model.PageCount</a></li>
+        }
+        @if (Model.Page < Model.PageCount)
+            {
+            <li><a href="~/Product?page=@(Model.Page + 1)&searchValue=@Model.SearchValue">&raquo;</a></li>
+        }
+    </ul>
+</div>

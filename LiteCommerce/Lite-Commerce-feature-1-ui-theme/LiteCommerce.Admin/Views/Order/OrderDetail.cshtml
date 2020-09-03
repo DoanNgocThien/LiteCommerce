@@ -1,0 +1,63 @@
+﻿@model LiteCommerce.Admin.Models.OrderDetailPaginationResult
+@{
+    ViewBag.Title = "OrderDetail";
+}
+    <form action="~/Order" method="get">
+        <div class="box-header text-right">
+            <a href="~/Order">Back to List</a>
+        </div>
+        <div class="box box-success">
+            <div class="box-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="bg-light-blue-active">
+                            <th style="width:30px ">
+                                <input type="checkbox" />
+                            </th>
+                            
+                            <th style="width:80px">ProductID</th>
+                            <th style="width:80px">ProductName</th>
+                            <th style="width:80px">UnitPrice</th>
+                            <th style="width:80px">Quantity</th>
+                            <th style="width:80px">Discount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Data)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="orderIDs" value="@order.OrderID" />
+                                </td>
+                                <td>
+                                    <span style="display:block">
+                                        @order.Product.ProductID
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="display:block">
+                                        @order.Product.ProductName
+                                    </span>
+                                </td>
+                                @*<td>
+                                    <span style="display:block">@order.ProductID</span>
+                                </td>*@
+                                <td>
+                                    <span style="display:block">@order.UnitPrice</span>
+                                </td>
+                                <td>
+                                    <span style="display:block">@order.Quantity</span>
+                                </td>
+                                <td>
+                                    <span style="display:block">@(order.UnitPrice-order.UnitPrice*order.Discount)</span>
+                                </td>
+                                
+      
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+

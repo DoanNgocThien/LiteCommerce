@@ -1,0 +1,160 @@
+﻿@model LiteCommerce.Admin.Models.OrderPaginationResult
+@{
+    ViewBag.Title = "Manage Order";
+    int i = 0;
+}
+<div class="box box-primary">
+    <div class="box-body">
+        <form action="~/Order" method="get">
+            <div class="row">
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(m => m.Category,
+                      SelectListHelper.Categories(), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(m => m.Employee,
+                      SelectListHelper.Employees(), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(m => m.Shipper,
+                      SelectListHelper.Shippers(), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(m => m.Country,
+                      SelectListHelper.Countries(), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-4 ">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-block btn-default"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<form method="post" action="~/Order/Delete">
+    <div class="container-fluid row lc-margin-bottom">
+        <div class="col-sm-8">
+            There are <b>@Model.RowCount</b> Order. Page @string.Format("{0}/{1}", Model.Page, Model.PageCount)
+        </div>
+        @*<div class="col-md-4 text-right">
+            <div class="btn-group">
+                <a href="~/Order/Create" class="btn btn-sm btn-primary">Add Order</a>
+                <button type="submit" class="btn btn-sm btn-danger">Delete Order</button>
+            </div>
+        </div>*@
+    </div>
+    <div class="box box-success">
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:30px">
+                            <input type="checkbox" />
+                        </th>
+                        <<th style="width:50px">#</th>
+                            <th style="width:auto">Order ID</th>
+                            <th style="width:auto">Customer</th>
+                            <th style="width:auto">Employee</th>
+                            <th style="width:auto">Shipper</th>
+                            <th style="width:auto">Freight</th>
+                            <th style="width:auto">Date</th>
+                            <th style="width:150px">Address</th>
+                            <th style="width:50px">Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Data)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="OrderIDs" value="@order.OrderID" />
+                            </td>
+
+                            <td>@(++i)</td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @order.OrderID
+                                </span>
+                            </td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @order.Customer.CompanyName
+                                </span>
+                            </td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @order.Employee.FirstName @order.Employee.LastName
+                                </span>
+                            </td>
+                            <td>
+                                <span class="lc-company-name">
+                                    @order.Shipper.CompanyName 
+                                </span>
+                            </td>
+                            <td>
+                                <span style="display:block">@order.Freight</span>
+                            </td>
+                            <td>
+                                <span style="display:block" title="OrderDate">@string.Format("{0:dd/MM/yyyy}", order.OrderDate)</span>
+                                <span style="display:block" title="RequiredDate">@string.Format("{0:dd/MM/yyyy}", order.RequiredDate)</span>
+                                <span style="display:block" title="ShippedDate">@string.Format("{0:dd/MM/yyyy}", order.ShippedDate)</span>
+                            </td>
+                            <td>
+                                <span style="display:block" title="ShipAddress">@order.ShipAddress</span>
+                                <span style="display:block" title="ShipCity">@order.ShipCity</span>
+                                <span style="display:block" title="ShipCountry">@order.ShipCountry</span>
+                            </td>
+                            <td class="text-right">
+                                <a class="btn btn-sm btn-default" style="align-items:center" href="~/Order/OrderDetail/@order.OrderID/">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+<div class="box-footer clearfix text-center">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        @if (Model.Page > 1)
+            {
+            <li><a href="~/Order?page=@(Model.Page - 1)&searchValue=@Model.SearchValue">&laquo;</a></li>
+        }
+        @if (Model.Page > 3)
+            {
+            <li><a href="~/Order?page=1&searchValue=@(Model.SearchValue)">1</a></li>
+            <li class="dots"><a href="#">...</a></li>
+        }
+        @if (Model.Page - 2 > 0)
+            {
+            <li><a href="~/Order?page=@(Model.Page-2)&searchValue=@Model.SearchValue">@(Model.Page - 2)</a></li>
+        }
+        @if (Model.Page - 1 > 0)
+            {
+            <li><a href="~/Order?page=@(Model.Page-1)&searchValue=@Model.SearchValue">@(Model.Page - 1)</a></li>
+        }
+        <li class="active"><a href="~/Order?page=@Model.Page&searchValue=@Model.SearchValue">@Model.Page</a></li>
+        @if (Model.Page + 1 < Model.PageCount + 1)
+            {
+            <li><a href="~/Order?page=@(Model.Page+1)&searchValue=@Model.SearchValue">@(Model.Page + 1)</a></li>
+        }
+        @if (Model.Page + 2 < Model.PageCount + 1)
+            {
+            <li><a href="~/Order?page=@(Model.Page+2)&searchValue=@Model.SearchValue">@(Model.Page + 2)</a></li>
+        }
+        @if (Model.Page < Model.PageCount - 2)
+            {
+            <li class="dots"><a href="#">...</a></li>
+            <li><a href="~/Order?page=@Model.PageCount&searchValue=@Model.SearchValue">@Model.PageCount</a></li>
+        }
+        @if (Model.Page < Model.PageCount)
+            {
+            <li><a href="~/Order?page=@(Model.Page + 1)&searchValue=@Model.SearchValue">&raquo;</a></li>
+        }
+    </ul>
+</div>

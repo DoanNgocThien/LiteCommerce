@@ -1,0 +1,109 @@
+﻿@model LiteCommerce.DomainModels.Order
+@{
+    ViewData["Title"] = "Add order";
+    ViewData["HeaderTitle"] = "Add order";
+}
+<div class="box box-primary">
+    <form action="~/Order/Create" method="POST" role="form">
+        <div class="box-header text-right">
+            <a href="~/Order">Back to List</a>
+        </div>
+        <div class="box-body">
+
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>Customers:</label>
+                    
+                        @Html.DropDownListFor(m => m.Customer,
+                      SelectListHelper.Customers(), new { @class = "form-control" })
+                   
+                    @Html.ValidationMessage("CustomerID", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Employees:</label>
+                   
+                        @Html.DropDownListFor(m => m.Employee,
+                      SelectListHelper.Employees(), new { @class = "form-control" })
+                  
+                    @Html.ValidationMessage("EmployeeID", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Shippers:</label>
+                    
+                        @Html.DropDownListFor(m => m.Shipper,
+                      SelectListHelper.Shippers(), new { @class = "form-control" })
+                   
+                    @Html.ValidationMessage("ShipperID", new { @class = "help-block" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>Order date:</label>
+                    <input type="date" name="OrderDate" value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)" class="form-control" placeholder="Order date">
+                    @Html.ValidationMessage("OrderDate", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Required date:</label>
+                    <input type="date" name="RequiredDate" value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)" class="form-control" placeholder="Required date">
+                    @Html.ValidationMessage("RequiredDate", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Shipped date:</label>
+                    <input type="date" name="ShippedDate" value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)" class="form-control" placeholder="Shipped date">
+                    @Html.ValidationMessage("ShippedDate", new { @class = "help-block" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>Freight: </label>
+                    <input name="Freight" type="number" value=""  class="form-control" placeholder="Enter company Name">
+                    @Html.ValidationMessage("Freight", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Countries:</label>
+                    
+                        @Html.DropDownListFor(m => m.ShipCountry,
+                      SelectListHelper.Countries(), new { @class = "form-control" })
+                   
+                    @Html.ValidationMessage("ShipCountry", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>City:</label>
+                    <input name="ShipCity" value="" type="text" class="form-control" placeholder="City">
+                    @Html.ValidationMessage("ShipCity", new { @class = "help-block" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Address:</label>
+                <input name="ShipAddress" value="" type="text" class="form-control" placeholder="Address">
+                @Html.ValidationMessage("ShipAddress", new { @class = "help-block" })
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>Unit price: </label>
+                    <input name="UnitPrice" type="number" value=""  class="form-control" placeholder="Unit price">
+                    @Html.ValidationMessage("UnitPrice", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Quantity:</label>
+                    <input name="Quantity" value="" type="number" class="form-control" placeholder="Quantity">
+                    @Html.ValidationMessage("Quantity", new { @class = "help-block" })
+                </div>
+                <div class="col-sm-4">
+                    <label>Discount:</label>
+                    <input name="Discount" value="" type="number" class="form-control" placeholder="Discount">
+                    @Html.ValidationMessage("Discount", new { @class = "help-block" })
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-sm btn-primary href="~/Order">
+                <i class="fa fa-save"></i> Save
+            </button>
+            <a class="btn btn-sm btn-default" href="~/Order">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>

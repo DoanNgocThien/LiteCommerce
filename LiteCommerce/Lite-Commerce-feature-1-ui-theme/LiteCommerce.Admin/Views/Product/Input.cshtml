@@ -1,0 +1,79 @@
+﻿@model LiteCommerce.DomainModels.Product
+@{
+
+}
+<div class="box box-primary">
+    <form role="form" action="~/Product/Input" method="post" enctype="multipart/form-data">
+        <div class="box-header text-right">
+            <a href="~/Product">Back to List</a>
+        </div>
+        <div class="box-body">
+            <input type="hidden" value="@ViewBag.Type" name="Type">
+            <input type="hidden" value="@Model.ProductID" name="ProductID">
+            <div class="form-group">
+                <label>Product Name:@Html.ValidationMessage("ProductName", new { @style = "color: red" })</label>
+                <input type="text" class="form-control" placeholder="Enter Product Name" value="@Model.ProductName" name="ProductName">
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label>Category:@Html.ValidationMessage("CategoryID", new { @style = "color: red" })</label>
+                    @Html.DropDownList("CategoryID",
+                      SelectListHelper.Categories(), new { @class = "form-control" })
+                    
+                </div>
+                <div class="col-sm-6">
+                    <label>Supplier:@Html.ValidationMessage("SupplierID", new { @style = "color: red" })</label>
+                    @Html.DropDownList("SupplierID",
+                      SelectListHelper.Suppliers(), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label>QuantityPerUnit:@Html.ValidationMessage("QuantityPerUnit", new { @style = "color: red" })</label>
+                    <input type="text" class="form-control" placeholder="QuantityPerUnit" value="@Model.QuantityPerUnit" name="QuantityPerUnit">
+                </div>
+                <div class="col-sm-6">
+                    <label>UnitPrice:@Html.ValidationMessage("UnitPrice", new { @style = "color: red" })</label>
+                    <input type="text" class="form-control" placeholder="UnitPrice" value="@Model.UnitPrice" name="UnitPrice">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" placeholder="Description" value="@Model.Descriptions" name="Descriptions">
+            </div>
+            <div class="form-group">
+                <label>PhotoPath:@Html.ValidationMessage("PhotoPath", new { @style = "color: red" })</label>
+                <input type="file" class="form-control" name="PhotoPath" value="@Model.PhotoPath">
+            </div>
+            <input type="hidden" class="form-control" name="PhotoPathDraft" value="@Model.PhotoPath">
+            @if (Model.ProductID != 0)
+            {
+                <div class="form-group">
+                    <label>Image:</label>
+                    <div class="input-group" style="width:500px ; height:auto ;">
+                        <img src="~/Images/products/@Model.PhotoPath" class="img-responsive "/>
+                    </div>
+                </div>
+            }
+            
+           
+            
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+                <i class="fa fa-save"></i> Save
+            </button>
+            @if (Model.ProductID != 0)
+            {
+                <a class="btn btn-sm btn-primary" href="~/Product/Attribute?CategoryID=@Model.CategoryID&ProductID=@Model.ProductID&Type=@ViewBag.Type">
+                    Update  Attributes
+                </a>
+            }
+            
+            <a class="btn btn-sm btn-default" href="~/Product">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
